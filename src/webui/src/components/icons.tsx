@@ -202,3 +202,15 @@ export function IconSun({ size, className }: IconProps = defaultProps) {
         </svg>
     )
 }
+
+/** 测试 */
+export function IconTest({ size, className }: IconProps = defaultProps) {
+    return (
+        <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>
+            <path d="M3 14s1.5 1 4 1 4-1 4-1m0-8s-1.5-1-4-1-4 1-4 1m8-8h-4" />
+            <rect x="3" y="2" width="18" height="20" rx="2" ry="2" />
+            <path d="M9 8h6M9 12h6M9 16h6" />
+        </svg>
+    )
+}
+

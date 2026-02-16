@@ -9,6 +9,7 @@ interface SidebarProps {
 const menuItems: { id: PageId; label: string; icon: React.ReactNode }[] = [
     { id: 'status', label: '仪表盘', icon: <IconDashboard size={18} /> },
     { id: 'config', label: '插件配置', icon: <IconSettings size={18} /> },
+    { id: 'rules', label: '审批规则', icon: <IconGroup size={18} /> },
     { id: 'groups', label: '群管理', icon: <IconGroup size={18} /> },
 ]
 

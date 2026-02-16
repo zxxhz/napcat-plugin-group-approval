@@ -1,0 +1,28 @@
+{
+  "enabled": true,
+  "debug": false,
+  "autoApproveEnabled": true,
+  "rejectWithReason": true,
+  "rejectReason": "不符合入群要求",
+  "groupConfigs": {
+    "123456789": {
+      "enabled": true,
+      "pattern": "进群|加群",
+      "approveAll": false,
+      "rejectOnMismatch": true
+    },
+    "987654321": {
+      "enabled": true,
+      "pattern": "^(口令|暗号)$",
+      "customRejectReason": "请提供正确的口令",
+      "rejectOnMismatch": true
+    },
+    "111111111": {
+      "enabled": true,
+      "approveAll": true
+    },
+    "222222222": {
+      "enabled": false
+    }
+  }
+}

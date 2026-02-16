@@ -64,7 +64,7 @@ export default function ConfigPage() {
                 <div className="space-y-5">
                     <ToggleRow
                         label="启用插件"
-                        desc="全局开关，关闭后不响应任何命令"
+                        desc="全局开关，关闭后不处理加群申请"
                         checked={config.enabled}
                         onChange={(v) => updateField('enabled', v)}
                     />
@@ -74,20 +74,24 @@ export default function ConfigPage() {
                         checked={config.debug}
                         onChange={(v) => updateField('debug', v)}
                     />
-                    <InputRow
-                        label="命令前缀"
-                        desc="触发命令的前缀"
-                        value={config.commandPrefix}
-                        onChange={(v) => updateField('commandPrefix', v)}
+                    <ToggleRow
+                        label="全局自动审批"
+                        desc="启用后根据正则表达式自动处理申请"
+                        checked={config.autoApproveEnabled}
+                        onChange={(v) => updateField('autoApproveEnabled', v)}
+                    />
+                    <ToggleRow
+                        label="拒绝时附加理由"
+                        desc="拒绝申请时是否告知申请人原因"
+                        checked={config.rejectWithReason}
+                        onChange={(v) => updateField('rejectWithReason', v)}
                     />
                     <InputRow
-                        label="冷却时间 (秒)"
-                        desc="同一命令请求冷却时间，0 表示不限制"
-                        value={String(config.cooldownSeconds)}
-                        type="number"
-                        onChange={(v) => updateField('cooldownSeconds', Number(v) || 0)}
+                        label="全局拒绝理由"
+                        desc="拒绝群内申请时使用的默认理由"
+                        value={config.rejectReason}
+                        onChange={(v) => updateField('rejectReason', v)}
                     />
-                    {/* TODO: 在这里添加你的配置项 */}
                 </div>
             </div>
 

@@ -33,8 +33,9 @@ function sanitizeConfig(raw: unknown): PluginConfig {
 
     if (typeof raw.enabled === 'boolean') out.enabled = raw.enabled;
     if (typeof raw.debug === 'boolean') out.debug = raw.debug;
-    if (typeof raw.commandPrefix === 'string') out.commandPrefix = raw.commandPrefix;
-    if (typeof raw.cooldownSeconds === 'number') out.cooldownSeconds = raw.cooldownSeconds;
+    if (typeof raw.autoApproveEnabled === 'boolean') out.autoApproveEnabled = raw.autoApproveEnabled;
+    if (typeof raw.rejectWithReason === 'boolean') out.rejectWithReason = raw.rejectWithReason;
+    if (typeof raw.rejectReason === 'string') out.rejectReason = raw.rejectReason;
 
     // 群配置清洗
     if (isObject(raw.groupConfigs)) {
@@ -42,13 +43,14 @@ function sanitizeConfig(raw: unknown): PluginConfig {
             if (isObject(groupConfig)) {
                 const cfg: GroupConfig = {};
                 if (typeof groupConfig.enabled === 'boolean') cfg.enabled = groupConfig.enabled;
-                // TODO: 在这里添加你的群配置项清洗
+                if (typeof groupConfig.pattern === 'string') cfg.pattern = groupConfig.pattern;
+                if (typeof groupConfig.approveAll === 'boolean') cfg.approveAll = groupConfig.approveAll;
+                if (typeof groupConfig.rejectOnMismatch === 'boolean') cfg.rejectOnMismatch = groupConfig.rejectOnMismatch;
+                if (typeof groupConfig.customRejectReason === 'string') cfg.customRejectReason = groupConfig.customRejectReason;
                 out.groupConfigs[groupId] = cfg;
             }
         }
     }
-
-    // TODO: 在这里添加你的配置项清洗逻辑
 
     return out;
 }
@@ -255,10 +257,10 @@ class PluginState {
     }
 
     /**
-     * 检查群是否启用（默认启用，除非明确设置为 false）
+     * 检查群是否启用（默认关闭，只有明确设置为 true 才启用）
      */
     isGroupEnabled(groupId: string): boolean {
-        return this.config.groupConfigs[groupId]?.enabled !== false;
+        return this.config.groupConfigs[groupId]?.enabled === true;
     }
 
     // ==================== 统计 ====================

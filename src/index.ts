@@ -15,7 +15,7 @@
  *   plugin_set_config         → 自定义配置保存
  *   plugin_on_config_change   → 配置变更回调
  *
- * @author Your Name
+ * @author zxxhz
  * @license MIT
  */
 
@@ -26,10 +26,11 @@ import type {
     NapCatPluginContext,
 } from 'napcat-types/napcat-onebot/network/plugin/types';
 import { EventType } from 'napcat-types/napcat-onebot/event/index';
+import type { OB11GroupAddRequest } from 'napcat-types/napcat-onebot';
 
 import { buildConfigSchema } from './config';
 import { pluginState } from './core/state';
-import { handleMessage } from './handlers/message-handler';
+import { handleGroupAddRequest } from './handlers/request-handler';
 import { registerApiRoutes } from './services/api-service';
 import type { PluginConfig } from './types';
 
@@ -75,8 +76,8 @@ export const plugin_onmessage: PluginModule['plugin_onmessage'] = async (ctx, ev
     if (event.post_type !== EventType.MESSAGE) return;
     // 检查插件是否启用
     if (!pluginState.config.enabled) return;
-    // 委托给消息处理器
-    await handleMessage(ctx, event);
+    // 如果需要处理消息，在这里添加消息处理逻辑
+    // 示例：await handleMessage(ctx, event);
 };
 
 /**
@@ -84,10 +85,14 @@ export const plugin_onmessage: PluginModule['plugin_onmessage'] = async (ctx, ev
  * 处理所有 OneBot 事件（通知、请求等）
  */
 export const plugin_onevent: PluginModule['plugin_onevent'] = async (ctx, event) => {
-    // TODO: 在这里处理通知、请求等非消息事件
-    // 示例：
-    // if (event.post_type === EventType.NOTICE) { ... }
-    // if (event.post_type === EventType.REQUEST) { ... }
+    // 处理群加入请求
+    if (
+        event.post_type === EventType.REQUEST &&
+        (event as any).request_type === 'group' &&
+        (event as any).sub_type === 'add'
+    ) {
+        await handleGroupAddRequest(ctx, event as OB11GroupAddRequest);
+    }
 };
 
 /**

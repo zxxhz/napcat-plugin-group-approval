@@ -116,8 +116,9 @@ export default function StatusPage({ status, onRefresh }: StatusPageProps) {
                     </button>
                 </div>
                 <div className="space-y-3">
-                    <InfoRow label="命令前缀" value={config.commandPrefix} />
-                    <InfoRow label="冷却时间" value={`${config.cooldownSeconds} 秒`} />
+                    <InfoRow label="全局启用" value={config.enabled ? '是' : '否'} />
+                    <InfoRow label="自动审批" value={config.autoApproveEnabled ? '是' : '否'} />
+                    <InfoRow label="拒绝时附加理由" value={config.rejectWithReason ? '是' : '否'} />
                     <InfoRow label="调试模式" value={config.debug ? '开启' : '关闭'} />
                 </div>
             </div>

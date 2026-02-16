@@ -1,24 +1,27 @@
 {
-  "name": "napcat-plugin-template",
-  "plugin": "插件模板",
+  "name": "napcat-plugin-group-approval",
+  "plugin": "加群申请审批系统",
   "version": "1.0.0",
   "type": "module",
   "main": "index.mjs",
-  "description": "NapCat 插件开发模板 - 快速开始你的插件开发",
-  "author": "Your Name",
+  "description": "根据正则表达式自动审批群入申请，支持按群设置不同规则",
+  "author": "zxxhz",
   "license": "MIT",
   "keywords": [
     "napcat",
     "plugin",
     "qq",
-    "template"
+    "group",
+    "approval",
+    "regex"
   ],
   "napcat": {
     "tags": [
-      "工具"
+      "管理工具",
+      "自动化"
     ],
     "minVersion": "4.14.0",
-    "homepage": ""
+    "homepage": "https://github.com/zxxhz/napcat-plugin-group-approval"
   },
   "dependencies": {
     "napcat-types": "0.0.16"

@@ -107,12 +107,44 @@ export function registerApiRoutes(ctx: NapCatPluginContext): void {
             }
 
             const body = req.body as Record<string, unknown> | undefined;
-            const enabled = body?.enabled;
-            pluginState.updateGroupConfig(groupId, { enabled: Boolean(enabled) });
-            ctx.logger.info(`群 ${groupId} 配置已更新: enabled=${enabled}`);
-            res.json({ code: 0, message: 'ok' });
+            const { enabled, pattern, approveAll, customRejectReason } = body || {};
+
+            // 验证正则表达式
+            if (typeof pattern === 'string' && pattern.trim() !== '') {
+                try {
+                    new RegExp(pattern);
+                } catch (e) {
+                    return res.status(400).json({ code: -1, message: `无效的正则表达式: ${e}` });
+                }
+            }
+
+            const updateData: Record<string, unknown> = {};
+            if (typeof enabled === 'boolean') updateData.enabled = enabled;
+            if (typeof pattern === 'string') updateData.pattern = pattern.trim() || undefined;
+            if (typeof approveAll === 'boolean') updateData.approveAll = approveAll;
+            if (typeof customRejectReason === 'string') updateData.customRejectReason = customRejectReason.trim() || undefined;
+
+            pluginState.updateGroupConfig(groupId, updateData);
+            ctx.logger.info(`群 ${groupId} 配置已更新`);
+            res.json({ code: 0, message: 'ok', data: pluginState.config.groupConfigs[groupId] });
         } catch (err) {
             ctx.logger.error('更新群配置失败:', err);
+            res.status(500).json({ code: -1, message: String(err) });
+        }
+    });
+
+    /** 获取单个群的详细配置 */
+    router.getNoAuth('/groups/:id/config', (_req, res) => {
+        try {
+            const groupId = _req.params?.id;
+            if (!groupId) {
+                return res.status(400).json({ code: -1, message: '缺少群 ID' });
+            }
+
+            const groupConfig = pluginState.config.groupConfigs[groupId] || {};
+            res.json({ code: 0, data: groupConfig });
+        } catch (err) {
+            ctx.logger.error('获取群配置失败:', err);
             res.status(500).json({ code: -1, message: String(err) });
         }
     });
@@ -139,7 +171,28 @@ export function registerApiRoutes(ctx: NapCatPluginContext): void {
         }
     });
 
-    // TODO: 在这里添加你的自定义 API 路由
+    /** 测试正则表达式 */
+    router.postNoAuth('/test-pattern', (_req, res) => {
+        try {
+            const body = _req.body as Record<string, unknown> | undefined;
+            const { pattern, testString } = body || {};
+
+            if (typeof pattern !== 'string' || typeof testString !== 'string') {
+                return res.status(400).json({ code: -1, message: '参数错误' });
+            }
+
+            try {
+                const regex = new RegExp(pattern);
+                const matches = regex.test(testString);
+                res.json({ code: 0, data: { matches, pattern, testString } });
+            } catch (e) {
+                res.status(400).json({ code: -1, message: `无效的正则表达式: ${e}` });
+            }
+        } catch (err) {
+            ctx.logger.error('测试正则表达式失败:', err);
+            res.status(500).json({ code: -1, message: String(err) });
+        }
+    });
 
     ctx.logger.debug('API 路由注册完成');
 }
