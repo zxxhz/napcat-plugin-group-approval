@@ -22,8 +22,7 @@ export default function Sidebar({ currentPage, onPageChange }: SidebarProps) {
                     <IconPlugin size={18} />
                 </div>
                 <div>
-                    <h1 className="font-bold text-sm leading-tight text-gray-900 dark:text-white">Plugin Template</h1>
-                    <p className="text-[10px] text-gray-400 font-medium tracking-wider">NAPCAT PLUGIN</p>
+                    <h1 className="font-bold text-sm leading-tight text-gray-900 dark:text-white">加群申请审批</h1>
                 </div>
             </div>
 

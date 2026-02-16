@@ -123,7 +123,6 @@ export default function RulesPage() {
                         <IconSearch size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
                         <input
                             className="input-field pl-9"
-                            placeholder="搜索群..."
                             value={search}
                             onChange={(e) => setSearch(e.target.value)}
                         />
