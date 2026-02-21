@@ -107,7 +107,7 @@ export function registerApiRoutes(ctx: NapCatPluginContext): void {
             }
 
             const body = req.body as Record<string, unknown> | undefined;
-            const { enabled, pattern, approveAll, customRejectReason } = body || {};
+            const { enabled, pattern, approveAll, rejectOnMismatch, customRejectReason } = body || {};
 
             // 验证正则表达式
             if (typeof pattern === 'string' && pattern.trim() !== '') {
@@ -122,6 +122,7 @@ export function registerApiRoutes(ctx: NapCatPluginContext): void {
             if (typeof enabled === 'boolean') updateData.enabled = enabled;
             if (typeof pattern === 'string') updateData.pattern = pattern.trim() || undefined;
             if (typeof approveAll === 'boolean') updateData.approveAll = approveAll;
+            if (typeof rejectOnMismatch === 'boolean') updateData.rejectOnMismatch = rejectOnMismatch;
             if (typeof customRejectReason === 'string') updateData.customRejectReason = customRejectReason.trim() || undefined;
 
             pluginState.updateGroupConfig(groupId, updateData);
