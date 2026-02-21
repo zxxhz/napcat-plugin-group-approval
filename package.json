@@ -1,7 +1,7 @@
 {
   "name": "napcat-plugin-group-approval",
   "plugin": "加群申请审批系统",
-  "version": "1.0.0",
+  "version": "1.0.2",
   "type": "module",
   "main": "index.mjs",
   "description": "根据正则表达式自动审批群入申请，支持按群设置不同规则",
